@@ -10,7 +10,11 @@ async function createUser(data) {
     const user = await userRepo.create(data);
     return user;
   } catch (error) {
-    console.log(error.name);
+    console.log(error);
+    if (error instanceof AppError) {
+      throw error;
+    }
+
     if (
       error.name == "SequelizeValidationError" ||
       error.name == "SequelizeUniqueConstraintError"
@@ -40,7 +44,10 @@ async function signin(data) {
         StatusCodes.NOT_FOUND,
       );
     }
-    const passwordMatched = await Auth.checkPassword(data.pass, user.pass);
+    const passwordMatched = await Auth.checkPassword(
+      data.password,
+      user.password,
+    );
     console.log("password matched", passwordMatched);
     if (!passwordMatched) {
       throw new AppError("Invalid Password ", StatusCodes.BAD_REQUEST);

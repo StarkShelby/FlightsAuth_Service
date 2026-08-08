@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
           isEmail: true,
         },
       },
-      pass: {
+      password: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -38,8 +38,8 @@ module.exports = (sequelize, DataTypes) => {
   );
   User.beforeCreate(function encrypt(user) {
     console.log("User before encryption", user);
-    const hashedPassword = bcrypt.hashSync(user.pass, 8);
-    user.pass = hashedPassword;
+    const hashedPassword = bcrypt.hashSync(user.password, 8);
+    user.password = hashedPassword;
     console.log("User after encryption", user);
   });
   return User;

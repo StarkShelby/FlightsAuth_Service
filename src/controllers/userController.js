@@ -6,7 +6,7 @@ async function createUser(req, res) {
   try {
     const user = await UserService.createUser({
       email: req.body.email,
-      pass: req.body.pass,
+      password: req.body.password,
     });
     console.log(req.body);
 
@@ -24,7 +24,7 @@ async function signin(req, res) {
   try {
     const user = await UserService.signin({
       email: req.body.email,
-      pass: req.body.pass,
+      password: req.body.password,
     });
     console.log(req.body);
 
