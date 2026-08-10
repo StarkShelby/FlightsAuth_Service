@@ -3,4 +3,5 @@ module.exports = {
   ErrorResponse: require("./error-response"),
   Enums: require("./enums"),
   Auth: require("./Auth"),
+  Proxy: require("./proxy"),
 };
