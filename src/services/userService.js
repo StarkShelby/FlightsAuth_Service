@@ -1,13 +1,17 @@
-const { UserRepo } = require("../repositories");
+const { UserRepo, RoleRepo } = require("../repositories");
 const { StatusCodes } = require("http-status-codes");
 const AppError = require("../utils/error/app-error");
-const { Auth } = require("../utils/common");
+const { Auth, Enums } = require("../utils/common");
+const { CUSTOMER } = Enums.User_Roles;
 
 const userRepo = new UserRepo();
+const roleRepo = new RoleRepo();
 
 async function createUser(data) {
   try {
     const user = await userRepo.create(data);
+    const role = await roleRepo.getRoleByName(Enums.User_Roles.CUSTOMER);
+    user.addRole(role);
     return user;
   } catch (error) {
     console.log(error);
@@ -25,12 +29,6 @@ async function createUser(data) {
       });
       throw new AppError(explanation, StatusCodes.BAD_REQUEST);
     }
-    // if (!data.pass.len < 6) {
-    //   throw new AppError(
-    //     "Password must be atleast 6 characters",
-    //     StatusCodes.BAD_REQUEST,
-    //   );
-    // }
     throw new AppError("Cannot create user", StatusCodes.INTERNAL_SERVER_ERROR);
   }
 }
